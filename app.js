@@ -8,7 +8,18 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+var server = app.listen(8810)
+var ws = require('socket.io').listen(server);
 
+//set socket
+ws.on('connection', (socket) =>{
+  socket.emit('news', { hello: 'Dama Sukma' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+})
+
+ws.set( 'origins', '*localhost:3000' );
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
